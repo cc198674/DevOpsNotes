@@ -1,3 +1,21 @@
+# Create a bucket
+resource "aws_s3_bucket" "b1" {
+  bucket = "terraform-serverless-jrdevops-rex"
+  acl    = "private"   # or can be "public-read"
+  tags = { 
+    Name  = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+# Upload an object
+resource "aws_s3_bucket_object" "object" {
+  bucket = "terraform-serverless-jrdevops-rex"
+  key    = "profile"
+  acl    = "private"  # or can be "public-read"
+  source = "example.zip"
+
+}
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
 resource "aws_iam_role" "lambda_exec" {
@@ -39,6 +57,10 @@ resource "aws_lambda_function" "example" {
   handler = "main.handler"
   runtime = "nodejs10.x"
   role=aws_iam_role.lambda_exec.arn
+  depends_on = [
+    aws_s3_bucket_object.object,
+    aws_s3_bucket.b1,
+  ]
 }
 
 
