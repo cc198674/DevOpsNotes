@@ -6,7 +6,7 @@ exports.handler = function(event, context, callback) {
         headers: {
             'Content-Type': 'text/html; charset=utf-8'
         },
-        body: '<p>Hello World!</p>'
+        body: '<p>Hao a ni!</p>'
     }
     callback(null, response)
 }
